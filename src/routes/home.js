@@ -1,27 +1,38 @@
-import { faker } from '@faker-js/faker'
 import {Router} from 'express'
-const router = Router()
+import {Users} from "../services/users.services.js";
 
-let users = []
-for (let i = 1; i <= 20; i++ ) {
-    const user = createRandomUser( i )
-    users.push( user )
-}
+const router = new Router()
+//
+// router.get('/', async (req, res) => {
+//
+//     const users = Users ( 'de')
+//
+//     res.render('index', {
+//         users,
+//         region: 'de'
+//     })
+// })
 
-function createRandomUser( i ) {
-    return {
-        number: i,
-        userId: faker.datatype.uuid(),
-        username: faker.internet.userName(),
-        address: faker.address.city(),
-        phone: faker.phone.phoneNumber()
-    };
-}
+router.get('/', async (req, res) => {
 
-router.get('/', (req,res,) => {
+    const region = req.body.region || 'de'
+    const users = Users ( region )
+
     res.render('index', {
-        users
+        users,
+        region
     })
 })
 
+router.post('/', async (req, res) => {
+
+    const region = req.body.region || 'de'
+    const count = req.body.count || 20
+    const users = Users ( region, count)
+    res.send({users, region})
+    res.render('index', {
+        users,
+        region
+    })
+})
 export const homeRoutes = router
