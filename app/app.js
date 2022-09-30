@@ -51,15 +51,22 @@ function post( id ) {
 }
 
 
-async function getUsersListHtml( arr, i = 0) {
+async function getUsersListHtml( arr, num = 0) {
     let html = ''
-    arr.forEach( (user, index) => html += `<tr>
-                                            <td>${Number(index) + i + 1}</td>
+    let i
+    arr.forEach( (user, index) => {
+            i = Number(index) + num + 1
+            html += `<tr>
+                                            <td>${i}</td>
                                             <td>${user.userId}</td>
                                             <td>${user.username}</td>
                                             <td>${user.address}</td>
                                             <td>${user.phone}</td>
-                                        </tr>`)
+                                        </tr>`;
+
+        }
+    )
+    localStorage.setItem('i', i)
     return html
 }
 
